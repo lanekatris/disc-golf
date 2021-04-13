@@ -1,0 +1,24 @@
+{
+  "name": "disc-golf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc",
+    "watch": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lanekatris/disc-golf.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lanekatris/disc-golf/issues"
+  },
+  "homepage": "https://github.com/lanekatris/disc-golf#readme",
+  "devDependencies": {
+    "typescript": "^4.2.4"
+  }
+}
