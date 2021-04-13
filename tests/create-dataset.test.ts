@@ -1,7 +1,8 @@
 // import { expect } from 'chai';
 
+import fs from 'fs-extra';
 import { CoursesByState, STATES } from '../src/courses-by-state';
-import { AppConfiguration } from '../src/configuration';
+import { AppConfiguration } from '../src/configuration/configuration';
 
 describe('Create Dataset', function () {
   this.timeout(20000);
@@ -11,10 +12,12 @@ describe('Create Dataset', function () {
     const result = await query.getCourses({
       cacheFolder: appConfiguration.htmlDirectory,
     });
+
     console.log('found these result', {
       count: result.length,
       course: result[0],
     });
-    // console.log('hey', result);
+
+    // Now we need to persist our well defined dg courses
   });
 });
