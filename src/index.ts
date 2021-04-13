@@ -1,3 +1,3 @@
-export function dostuff() {
-    return 'okkk'
+export function doStuff() {
+    return 'oak'
 }
