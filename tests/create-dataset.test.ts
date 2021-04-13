@@ -1,8 +1,8 @@
 // import { expect } from 'chai';
-import 'reflect-metadata';
 
 import { CoursesByState, STATES } from '../src/courses-by-state';
 import { AppConfiguration } from '../src/configuration/configuration';
+import { createDbConnection } from '../src/db';
 
 describe('Create Dataset', function () {
   this.timeout(20000);
@@ -19,5 +19,8 @@ describe('Create Dataset', function () {
     });
 
     // Now we need to persist our well defined dg courses
+    const connection = await createDbConnection(`${appConfiguration.htmlDirectory}/dg.db`);
+
+    await connection.manager.save(result);
   });
 });
