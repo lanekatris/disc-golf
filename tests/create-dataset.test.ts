@@ -1,6 +1,6 @@
 // import { expect } from 'chai';
+import 'reflect-metadata';
 
-import fs from 'fs-extra';
 import { CoursesByState, STATES } from '../src/courses-by-state';
 import { AppConfiguration } from '../src/configuration/configuration';
 
