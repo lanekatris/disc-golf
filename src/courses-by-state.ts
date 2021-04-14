@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { Connection, Repository } from 'typeorm';
-import { downloadOrRead } from './file';
 import { Course } from './course';
 import { AppConfiguration } from './configuration/configuration';
 import { Html } from './html';
@@ -177,6 +176,12 @@ export class CoursesByState {
       // Make get request
       console.log(`Pulling from: ${url}`);
       const { body } = await got(url);
+      await this.htmlRepo.save({
+        state: this.state,
+        page: this.page,
+        url,
+        html: body,
+      });
       response = body;
     }
 
