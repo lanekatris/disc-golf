@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { Repository } from 'typeorm';
-import { Course } from './course';
-import { Html } from './html';
+import { Course } from './entity/course';
+import { Html } from './entity/html';
 import { STATE } from './state';
-import { AppConfiguration } from './configuration/configuration';
+import { AppConfiguration } from './configuration';
 import { extractCoursesFromHtml, ExtractCoursesResponse } from './html-to-course';
 
 const got = require('got');

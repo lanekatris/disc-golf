@@ -1,9 +1,9 @@
 import { Connection } from 'typeorm';
-import { AppConfiguration } from './configuration/configuration';
+import { AppConfiguration } from './configuration';
 import { CoursesByState } from './courses-by-state';
 import { createDbConnection } from './db';
 import { STATE } from './state';
-import { Html } from './html';
+import { Html } from './entity/html';
 
 export async function getCoursesByStateAndPersist(state: STATE, connection: Connection) {
   const appConfiguration = new AppConfiguration();
@@ -25,7 +25,7 @@ export async function getCoursesByStateAndPersist(state: STATE, connection: Conn
   }
 }
 
-export async function createDataset(configuration: AppConfiguration) {
+export async function loadCoursesIntoDb(configuration: AppConfiguration) {
   const states = Object.values(STATE);
 
   const connection = await createDbConnection(`${configuration.htmlDirectory}/dg.db`);

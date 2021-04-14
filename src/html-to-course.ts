@@ -1,5 +1,5 @@
 import cheerio from 'cheerio';
-import { Course } from './course';
+import { Course } from './entity/course';
 
 export interface ExtractCoursesResponse {
     courses: Course[];

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { createConnection as typeOrmConnection } from 'typeorm';
-import { Course } from './course';
-import { Html } from './html';
+import { Course } from './entity/course';
+import { Html } from './entity/html';
 
 export function createDbConnection(dbPath: string) {
   return typeOrmConnection({
