@@ -1,7 +1,11 @@
 import _ from 'lodash';
+import { Connection, Repository } from 'typeorm';
 import { downloadOrRead } from './file';
 import { Course } from './course';
 import { AppConfiguration } from './configuration/configuration';
+import { Html } from './html';
+
+const got = require('got');
 
 const path = require('path');
 const cheerio = require('cheerio');
@@ -83,7 +87,11 @@ export enum STATES {
 export class CoursesByState {
   private page: number = 0;
 
-  constructor(public state: STATES = STATES.Colorado, public configuration: AppConfiguration) {}
+  private htmlRepo: Repository<Html>;
+
+  constructor(public state: STATES = STATES.Colorado, public configuration: AppConfiguration, public connection: Connection) {
+    this.htmlRepo = connection.getRepository(Html);
+  }
 
   private getUrl(): string {
     const pageQuery = this.page === 0 ? '' : `&page=${this.page}`;
@@ -153,15 +161,38 @@ export class CoursesByState {
     options: GetCoursesOptions,
   ): Promise<ExtractCoursesResponse> {
     const url = this.getUrl();
-    const response = await downloadOrRead(
-      url,
-      path.join(
-        options.cacheFolder,
-        `dg-courses-by-state-${this.state}-page-${this.page}.html`,
-      ),
-    );
-    this.page++;
+    // const response = await downloadOrRead(
+    //   url,
+    //   path.join(
+    //     options.cacheFolder,
+    //     `dg-courses-by-state-${this.state}-page-${this.page}.html`,
+    //   ),
+    // );
+    const htmlRecord = await this.htmlRepo.findOne({ state: this.state, page: this.page });
+    let response;
+    if (htmlRecord) {
+      console.log(`Pulling from DB: ${htmlRecord.id}`);
+      response = htmlRecord.html;
+    } else {
+      // Make get request
+      console.log(`Pulling from: ${url}`);
+      const { body } = await got(url);
+      response = body;
+    }
 
+    // Temporarly create records in sql
+    // const repository = this.connection.getRepository(Html);
+    //
+    // const htmlRecord = await repository.findOne({ state: this.state, page: this.page });
+    // console.log('html record', htmlRecord);
+    //
+    // if (!htmlRecord) {
+    //   await repository.save({
+    //     state: this.state, page: this.page, url, html: response,
+    //   });
+    // }
+
+    this.page++;
     return this.extractCoursesFromHtml(response);
   }
 

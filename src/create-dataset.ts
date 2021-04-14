@@ -5,7 +5,7 @@ import { createDbConnection } from './db';
 
 export async function getCoursesByStateAndPersist(state: STATES, connection: Connection) {
   const appConfiguration = new AppConfiguration();
-  const query = new CoursesByState(state, appConfiguration);
+  const query = new CoursesByState(state, appConfiguration, connection);
   const result = await query.getCourses({
     cacheFolder: appConfiguration.htmlDirectory,
   });
