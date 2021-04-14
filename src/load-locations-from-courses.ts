@@ -12,17 +12,11 @@ export async function loadLocationsFromCourses() {
   const connection = await createDbConnection(`${configuration.htmlDirectory}/dg.db`);
   const courseRepo = connection.getRepository(Course);
 
-  // const course = await courseRepo.findOne({
-  //   where: {
-  //     rawLocationData: IsNull(),
-  //   },
-  // });
   const courses = await courseRepo.find({
     where: {
       rawLocationData: IsNull(),
     },
   });
-
   if (courses.length === 0) throw new Error('No courses found');
 
   let counter = 1;
@@ -39,19 +33,11 @@ export async function loadLocationsFromCourses() {
     c.rawLocationData = JSON.stringify(response.data);
 
     await courseRepo.save(c);
-    counter++;
+    counter += 1;
     callback();
-  // }, 45);
   }, CONCURRENCY);
-
-  // q.drain(async () => {
-  //   // We are done
-  // });
 
   courses.map((c) => q.push(c));
   await q.drain();
-  // await q.push(courses);
   console.log('done!');
-
-  // console.log('response', JSON.stringify(response.data, null, 2));
 }
