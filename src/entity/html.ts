@@ -18,4 +18,7 @@ export class Html {
 
     @Column()
     html!: string;
+
+    @Column({ default: () => 'current_timestamp' })
+    createdOn!: string
 }
