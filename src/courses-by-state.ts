@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import { downloadOrRead } from './file';
 import { Course } from './course';
+import { AppConfiguration } from './configuration/configuration';
 
 const path = require('path');
 const cheerio = require('cheerio');
@@ -81,7 +83,7 @@ export enum STATES {
 export class CoursesByState {
   private page: number = 0;
 
-  constructor(public state: STATES = STATES.Colorado) {}
+  constructor(public state: STATES = STATES.Colorado, public configuration: AppConfiguration) {}
 
   private getUrl(): string {
     const pageQuery = this.page === 0 ? '' : `&page=${this.page}`;
@@ -107,7 +109,13 @@ export class CoursesByState {
 
     rows.each((index: number, element: any) => {
       const el = $(element);
-      const id = el.find('.views-field-title a').attr('href') as string;
+      // href="/course-directory/course/mount-shasta-ski-park-marmot-ridge"
+      const id = el.find('.views-field-title a').attr('href').replace('/course-directory/course/', '');
+
+      const zip = (CoursesByState.clean(el.find('.views-field-field-course-location-1').text()) as string)
+        .replace(/\s/g, '');
+
+      const zipReplacement = this.configuration.replacements.get(zip);
 
       courses.push(
         new Course(
@@ -118,10 +126,7 @@ export class CoursesByState {
             .text()
             .replace(/\n/, ''),
           el.find('.addressfield-state').text(),
-          CoursesByState.clean(
-            el.find('.views-field-field-course-location-1', 'num').text(),
-            'num',
-          ) as number,
+          zipReplacement || zip,
           CoursesByState.clean(
             el.find('.views-field-field-course-holes').text(),
             'num',
@@ -165,11 +170,18 @@ export class CoursesByState {
 
     let loadMore = true;
     while (loadMore) {
-      console.log(`Getting courses for page: ${this.page}`);
+      // console.log(`Getting courses for page: ${this.page}`);
       const response = await this.downloadAndParseCourses(options);
-      console.log(`Found ${response.courses.length}`);
+      // console.log(`Found ${response.courses.length}`);
       courses = courses.concat(response.courses);
       loadMore = response.hasMore;
+    }
+
+    // Sometimes courses are duplicated
+    const oldLength = courses.length;
+    courses = _.uniqBy(courses, 'id');
+    if (oldLength !== courses.length) {
+      console.log(`Uniq killed: ${oldLength - courses.length} courses`);
     }
 
     return courses;

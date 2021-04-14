@@ -15,7 +15,7 @@ export class Course {
   state: string;
 
   @Column()
-  zip: number;
+  zip: string;
 
   @Column()
   holeCount: number;
@@ -23,17 +23,8 @@ export class Course {
   @Column({ nullable: true })
   rating?: number;
 
-  // constructor(
-  //   public id?: string,
-  //   public name?: string,
-  //   public city?: string,
-  //   public state?: string,
-  //   public zip?: number,
-  //   public holeCount?: number,
-  //   public rating?: number,
-  // ) {}
-
-  constructor(id: string, name: string, city: string, state: string, zip: number, holeCount: number, rating: number) {
+  // eslint-disable-next-line max-len
+  constructor(id: string, name: string, city: string, state: string, zip: string, holeCount: number, rating: number) {
     this.id = id;
     this.name = name;
     this.city = city;

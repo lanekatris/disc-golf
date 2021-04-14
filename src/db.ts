@@ -10,6 +10,6 @@ export function createDbConnection(dbPath: string) {
       Course,
     ],
     synchronize: true,
-    logging: true,
+    logging: false,
   });
 }
