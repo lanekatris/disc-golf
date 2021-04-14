@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/lanekatris/disc-golf#readme",
   "devDependencies": {
+    "@types/async": "^3.2.6",
     "@types/fs-extra": "^9.0.11",
     "@types/json2csv": "^5.0.1",
     "@types/lodash": "^4.14.168",
@@ -35,6 +36,7 @@
     "@googlemaps/google-maps-services-js": "^3.1.16",
     "@types/chai": "^4.2.16",
     "@types/mocha": "^8.2.2",
+    "async": "^3.2.0",
     "chai": "^4.3.4",
     "cheerio": "^1.0.0-rc.6",
     "fs-extra": "^9.1.0",
