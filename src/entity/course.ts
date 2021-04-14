@@ -23,6 +23,12 @@ export class Course {
   @Column({ nullable: true })
   rating?: number;
 
+  @Column({ nullable: true })
+  rawLocationData?: string;
+
+  @Column({ default: 0 })
+  didFindLocations!: boolean;
+
   // eslint-disable-next-line max-len
   constructor(id: string, name: string, city: string, state: string, zip: string, holeCount: number, rating: number) {
     this.id = id;

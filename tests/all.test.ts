@@ -3,6 +3,7 @@ import { loadCoursesIntoDb } from '../src/load-courses-into-db';
 import { createCsvFromCoursesDb } from '../src/create-csv-from-courses-db';
 import { createDbConnection } from '../src/db';
 import { Course } from '../src/entity/course';
+import { loadLocationsFromCourses } from '../src/load-locations-from-courses';
 
 describe('Create Dataset', function describeAll() {
   this.timeout(200000);
@@ -16,5 +17,8 @@ describe('Create Dataset', function describeAll() {
       configuration,
       courseRepo: connection.getRepository(Course),
     });
+  });
+  it('Finds GPS coordinates for courses', async () => {
+    await loadLocationsFromCourses();
   });
 });
