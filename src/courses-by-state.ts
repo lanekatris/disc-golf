@@ -1,173 +1,39 @@
 import _ from 'lodash';
-import { Connection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Course } from './course';
-import { AppConfiguration } from './configuration/configuration';
 import { Html } from './html';
+import { STATE } from './state';
+import { AppConfiguration } from './configuration/configuration';
+import { extractCoursesFromHtml, ExtractCoursesResponse } from './html-to-course';
 
 const got = require('got');
 
-const path = require('path');
-const cheerio = require('cheerio');
-
-export interface GetCoursesOptions {
-  cacheFolder: string;
+interface CoursesByStateInput {
+  state: STATE
+  htmlRepo: Repository<Html>
+  configuration: AppConfiguration
 }
 
-interface ExtractCoursesResponse {
-  courses: Course[];
-  hasMore: boolean;
-}
-
-export enum STATES {
-  Alabama = 'AL',
-  Alaska = 'AK',
-  Arizona = 'AZ',
-  Arkansas = 'AR',
-  California = 'CA',
-  Colorado = 'CO',
-  Connecticut = 'CT',
-  Delaware = 'DE',
-  DistrictofColumbia = 'DC',
-  Florida = 'FL',
-  Georgia = 'GA',
-  Hawaii = 'HI',
-  Idaho = 'ID',
-  Illinois = 'IL',
-  Indiana = 'IN',
-  Iowa = 'IA',
-  Kansas = 'KS',
-  Kentucky = 'KY',
-  Louisiana = 'LA',
-  Maine = 'ME',
-  Maryland = 'MD',
-  Massachusetts = 'MA',
-  Michigan = 'MI',
-  Minnesota = 'MN',
-  Mississippi = 'MS',
-  Missouri = 'MO',
-  Montana = 'MT',
-  Nebraska = 'NE',
-  Nevada = 'NV',
-  NewHampshire = 'NH',
-  NewJersey = 'NJ',
-  NewMexico = 'NM',
-  NewYork = 'NY',
-  NorthCarolina = 'NC',
-  NorthDakota = 'ND',
-  Ohio = 'OH',
-  Oklahoma = 'OK',
-  Oregon = 'OR',
-  Pennsylvania = 'PA',
-  RhodeIsland = 'RI',
-  SouthCarolina = 'SC',
-  SouthDakota = 'SD',
-  Tennessee = 'TN',
-  Texas = 'TX',
-  Utah = 'UT',
-  Vermont = 'VT',
-  Virginia = 'VA',
-  Washington = 'WA',
-  WestVirginia = 'WV',
-  Wisconsin = 'WI',
-  Wyoming = 'WY',
-  AA = 'AA',
-  AE = 'AE',
-  AP = 'AP',
-  AS = 'AS',
-  FM = 'FM',
-  Guam = 'GU',
-  MarshallIslands = 'MH',
-  NorthernMarianaIslands = 'MP',
-  Palau = 'PW',
-  PuertoRico = 'PR',
-  VirginIslands = 'VI'
+function getUrl(state: STATE, page: number): string {
+  const pageQuery = page === 0 ? '' : `&page=${page}`;
+  return `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=${state}&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All${pageQuery}`;
 }
 
 export class CoursesByState {
   private page: number = 0;
 
-  private htmlRepo: Repository<Html>;
+  private readonly input: CoursesByStateInput;
 
-  constructor(public state: STATES = STATES.Colorado, public configuration: AppConfiguration, public connection: Connection) {
-    this.htmlRepo = connection.getRepository(Html);
-  }
-
-  private getUrl(): string {
-    const pageQuery = this.page === 0 ? '' : `&page=${this.page}`;
-    return `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=${this.state}&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All${pageQuery}`;
-  }
-
-  private static clean(
-    input: string,
-    type: string = 'string',
-  ): string | number {
-    const result = input.replace(/\n/, '');
-
-    if (type === 'num') return parseInt(result, 10);
-
-    return result;
-  }
-
-  private extractCoursesFromHtml(html: string): ExtractCoursesResponse {
-    const $ = cheerio.load(html);
-    const rows = $('tbody tr');
-
-    const courses: Course[] = [];
-
-    rows.each((index: number, element: any) => {
-      const el = $(element);
-      // href="/course-directory/course/mount-shasta-ski-park-marmot-ridge"
-      const id = el.find('.views-field-title a').attr('href').replace('/course-directory/course/', '');
-
-      const zip = (CoursesByState.clean(el.find('.views-field-field-course-location-1').text()) as string)
-        .replace(/\s/g, '');
-
-      const zipReplacement = this.configuration.replacements.get(zip);
-
-      courses.push(
-        new Course(
-          id,
-          el.find('.views-field-title a').text(),
-          el
-            .find('.views-field-field-course-location')
-            .text()
-            .replace(/\n/, ''),
-          el.find('.addressfield-state').text(),
-          zipReplacement || zip,
-          CoursesByState.clean(
-            el.find('.views-field-field-course-holes').text(),
-            'num',
-          ) as number,
-          CoursesByState.clean(
-            el
-              .find('.average-rating')
-              .text()
-              .replace(/Average: /, ''),
-            'num',
-          ) as number,
-        ),
-      );
-    });
-    // console.log(courses[0].serializeLocation());
-
-    return {
-      courses,
-      hasMore: $('.pager-last.last').length > 0,
-    };
+  constructor(input: CoursesByStateInput) {
+    this.input = input;
   }
 
   private async downloadAndParseCourses(
-    options: GetCoursesOptions,
   ): Promise<ExtractCoursesResponse> {
-    const url = this.getUrl();
-    // const response = await downloadOrRead(
-    //   url,
-    //   path.join(
-    //     options.cacheFolder,
-    //     `dg-courses-by-state-${this.state}-page-${this.page}.html`,
-    //   ),
-    // );
-    const htmlRecord = await this.htmlRepo.findOne({ state: this.state, page: this.page });
+    const { state, htmlRepo } = this.input;
+    const url = getUrl(state, this.page);
+    const htmlRecord = await htmlRepo.findOne({ state, page: this.page });
+
     let response;
     if (htmlRecord) {
       console.log(`Pulling from DB: ${htmlRecord.id}`);
@@ -176,8 +42,8 @@ export class CoursesByState {
       // Make get request
       console.log(`Pulling from: ${url}`);
       const { body } = await got(url);
-      await this.htmlRepo.save({
-        state: this.state,
+      await htmlRepo.save({
+        state,
         page: this.page,
         url,
         html: body,
@@ -185,30 +51,17 @@ export class CoursesByState {
       response = body;
     }
 
-    // Temporarly create records in sql
-    // const repository = this.connection.getRepository(Html);
-    //
-    // const htmlRecord = await repository.findOne({ state: this.state, page: this.page });
-    // console.log('html record', htmlRecord);
-    //
-    // if (!htmlRecord) {
-    //   await repository.save({
-    //     state: this.state, page: this.page, url, html: response,
-    //   });
-    // }
-
-    this.page++;
-    return this.extractCoursesFromHtml(response);
+    this.page += 1;
+    return extractCoursesFromHtml(response);
   }
 
-  public async getCourses(options: GetCoursesOptions): Promise<Course[]> {
+  public async getCourses(): Promise<Course[]> {
     let courses: Course[] = [];
 
     let loadMore = true;
     while (loadMore) {
-      // console.log(`Getting courses for page: ${this.page}`);
-      const response = await this.downloadAndParseCourses(options);
-      // console.log(`Found ${response.courses.length}`);
+      // eslint-disable-next-line no-await-in-loop
+      const response = await this.downloadAndParseCourses();
       courses = courses.concat(response.courses);
       loadMore = response.hasMore;
     }

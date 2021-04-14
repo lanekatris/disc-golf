@@ -10,14 +10,7 @@ function getEnvironmentConfiguration(variableName: string, requireExists = true)
 export class AppConfiguration {
     public htmlDirectory: string;
 
-    public replacements: Map<string, string>
-
     constructor() {
       this.htmlDirectory = getEnvironmentConfiguration('DG_HTML_DIRECTORY', false) || '/Users/lane/Documents/GitHub/disc-golf/dist/data';
-      this.replacements = new Map();
-
-      this.replacements
-        .set('!8603', '18603')
-        .set('', '');
     }
 }
