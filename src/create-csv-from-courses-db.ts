@@ -10,7 +10,7 @@ interface CreateCsvInput {
 }
 
 export async function createCsvFromCoursesDb(input: CreateCsvInput) {
-  const { courseRepo, configuration: { htmlDirectory } } = input;
+  const { courseRepo, configuration: { databasePath } } = input;
 
   console.log('Querying database for all courses...');
   const courses = await courseRepo.find();
@@ -24,6 +24,6 @@ export async function createCsvFromCoursesDb(input: CreateCsvInput) {
   const csv = await parseAsync(courses);
 
   console.log('Writing CSV file...');
-  await fs.outputFile(`${htmlDirectory}/courses.csv`, csv);
+  await fs.outputFile(`${databasePath}/courses.csv`, csv);
   console.log('Done');
 }

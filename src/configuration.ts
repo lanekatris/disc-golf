@@ -8,12 +8,12 @@ function getEnvironmentConfiguration(variableName: string, requireExists = true)
 }
 
 export class AppConfiguration {
-    public htmlDirectory: string;
+    public databasePath: string;
 
     public googleMapsApiKey: string;
 
     constructor() {
-      this.htmlDirectory = getEnvironmentConfiguration('DG_HTML_DIRECTORY', false) || '/Users/lane/Documents/GitHub/disc-golf/dist/data';
+      this.databasePath = getEnvironmentConfiguration('DG_DB_PATH', false) || 'dg.db';
       this.googleMapsApiKey = getEnvironmentConfiguration('API_KEY_GEOCODING');
     }
 }

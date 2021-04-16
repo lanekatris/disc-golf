@@ -13,7 +13,7 @@ describe('Create Dataset', function describeAll() {
   });
   it('Creates csv file', async () => {
     const configuration = new AppConfiguration();
-    const connection = await createDbConnection(`${configuration.htmlDirectory}/dg.db`);
+    const connection = await createDbConnection(configuration.databasePath);
     await createCsvFromCoursesDb({
       configuration,
       courseRepo: connection.getRepository(Course),
@@ -25,4 +25,7 @@ describe('Create Dataset', function describeAll() {
   it('Evaluates geocode result and updates db', async () => {
     await evaluateGeocodes();
   });
+  it('Create database', async () => {
+    await createDbConnection()
+  })
 });

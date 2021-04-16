@@ -28,7 +28,7 @@ export async function getCoursesByStateAndPersist(state: STATE, connection: Conn
 export async function loadCoursesIntoDb(configuration: AppConfiguration) {
   const states = Object.values(STATE);
 
-  const connection = await createDbConnection(`${configuration.htmlDirectory}/dg.db`);
+  const connection = await createDbConnection(configuration.databasePath);
 
   // eslint-disable-next-line no-restricted-syntax
   for (const state of states) {

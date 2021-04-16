@@ -6,7 +6,7 @@ import { Course } from './entity/course';
 
 export async function evaluateGeocodes() {
   const configuration = new AppConfiguration();
-  const connection = await createDbConnection(`${configuration.htmlDirectory}/dg.db`);
+  const connection = await createDbConnection(configuration.databasePath);
   const courseRepo = connection.getRepository(Course);
 
   const courses = await courseRepo.find({
@@ -24,13 +24,9 @@ export async function evaluateGeocodes() {
     if (!course.rawLocationData) throw new Error('raw location data is null');
 
     const originalResult = { data: JSON.parse(course.rawLocationData) } as GeocodeResponse;
-    // console.log('location data', JSON.parse(course.rawLocationData));
-
-    // if (originalResult.status !== 200) throw new Error('Location data was not 200');
-
-    // If we have more than one than we need to look closer
 
     course.foundLocationCount = originalResult.data.results.length;
+
     if (originalResult.data.results.length > 1 || originalResult.data.results.length === 0) {
       console.log(`skipping course because an issue with result count: ${originalResult.data.results.length}`);
     } else {

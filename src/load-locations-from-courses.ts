@@ -9,7 +9,7 @@ const client = new Client();
 const CONCURRENCY = 45;
 export async function loadLocationsFromCourses() {
   const configuration = new AppConfiguration();
-  const connection = await createDbConnection(`${configuration.htmlDirectory}/dg.db`);
+  const connection = await createDbConnection(configuration.databasePath);
   const courseRepo = connection.getRepository(Course);
 
   const courses = await courseRepo.find({
