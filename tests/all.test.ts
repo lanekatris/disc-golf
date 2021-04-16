@@ -4,6 +4,7 @@ import { createCsvFromCoursesDb } from '../src/create-csv-from-courses-db';
 import { createDbConnection } from '../src/db';
 import { Course } from '../src/entity/course';
 import { loadLocationsFromCourses } from '../src/load-locations-from-courses';
+import { evaluateGeocodes } from '../src/evaluate-geocodes';
 
 describe('Create Dataset', function describeAll() {
   this.timeout(200000);
@@ -20,5 +21,8 @@ describe('Create Dataset', function describeAll() {
   });
   it('Finds GPS coordinates for courses', async () => {
     await loadLocationsFromCourses();
+  });
+  it('Evaluates geocode result and updates db', async () => {
+    await evaluateGeocodes();
   });
 });

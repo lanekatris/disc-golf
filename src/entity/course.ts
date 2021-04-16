@@ -26,8 +26,20 @@ export class Course {
   @Column({ nullable: true })
   rawLocationData?: string;
 
-  @Column({ default: 0 })
-  didFindLocations!: boolean;
+  // @Column({ default: 0 })
+  // didFindLocations!: boolean;
+
+    @Column({ default: 0 })
+    foundLocationCount!: number
+
+  @Column({ nullable: true })
+  latitude?: number
+
+  @Column({ nullable: true })
+  longitude?:number
+
+  @Column({ nullable: true })
+  html?: string;
 
   // eslint-disable-next-line max-len
   constructor(id: string, name: string, city: string, state: string, zip: string, holeCount: number, rating: number) {

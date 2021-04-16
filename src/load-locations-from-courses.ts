@@ -29,7 +29,8 @@ export async function loadLocationsFromCourses() {
       },
     });
 
-    c.didFindLocations = response.data.results.length > 0;
+    // c.didFindLocations = response.data.results.length > 0;
+    c.foundLocationCount = response.data.results.length;
     c.rawLocationData = JSON.stringify(response.data);
 
     await courseRepo.save(c);
