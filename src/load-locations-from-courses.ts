@@ -7,6 +7,13 @@ import { Course } from './entity/course';
 
 const client = new Client();
 const CONCURRENCY = 45;
+
+// async function () {
+//
+// }
+
+// Let's create a function that happens when the count matches
+
 export async function loadLocationsFromCourses() {
   const configuration = new AppConfiguration();
   const connection = await createDbConnection(configuration.databasePath);
@@ -20,8 +27,17 @@ export async function loadLocationsFromCourses() {
   if (courses.length === 0) throw new Error('No courses found');
 
   let counter = 1;
+  // If zero, get html - https://www.pdga.com/course-directory/course/woodlands
+  // Save to course model
+  // Pluck off the address
+  // Do the same geocoding
+  // Update lat long
+  // What if we don't find this?
+
   const q = a.queue(async (c: Course, callback) => {
     console.log(`Processing ${counter}/${courses.length}`);
+
+    // TODO: Extract this to it's own thing
     const response = await client.geocode({
       params: {
         address: c.serializeLocation(),
@@ -29,7 +45,6 @@ export async function loadLocationsFromCourses() {
       },
     });
 
-    // c.didFindLocations = response.data.results.length > 0;
     c.foundLocationCount = response.data.results.length;
     c.rawLocationData = JSON.stringify(response.data);
 

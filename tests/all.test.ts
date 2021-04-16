@@ -26,6 +26,6 @@ describe('Create Dataset', function describeAll() {
     await evaluateGeocodes();
   });
   it('Create database', async () => {
-    await createDbConnection()
-  })
+    await createDbConnection();
+  });
 });
