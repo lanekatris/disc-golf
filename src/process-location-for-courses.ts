@@ -48,16 +48,27 @@ export class LocationProcessorForCourses {
     }
 
     async processCourse(course: Course, locationData: GeocodeResponse) {
-      const handlers = {
-        0: this.processNoLocations,
-      };
+      // const handlers = {
+      //   0: this.processNoLocations,
+      // };
 
-      const handler = handlers[locationData.data.results.length];
+      const handlers = new Map<number, Function>([
+        [0, this.processNoLocations],
+        [1, this.processOneLocation],
+      ]);
+
+      // const handler = handlers[locationData.data.results.length];
+      const handler = handlers.get(locationData.data.results.length);
+      if (!handler) throw new Error('Handler exactly not found');
 
       await handler(course, locationData);
     }
 
     async processNoLocations(course: Course, locationData: GeocodeResponse) {
+      // We have to scrape and
+    }
+
+    async processOneLocation(course: Course, locationData: GeocodeResponse) {
 
     }
 }
