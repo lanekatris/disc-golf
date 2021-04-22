@@ -8,12 +8,6 @@ import { Course } from './entity/course';
 const client = new Client();
 const CONCURRENCY = 45;
 
-// async function () {
-//
-// }
-
-// Let's create a function that happens when the count matches
-
 export async function loadLocationsFromCourses() {
   const configuration = new AppConfiguration();
   const connection = await createDbConnection(configuration.databasePath);

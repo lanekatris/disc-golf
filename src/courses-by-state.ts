@@ -4,9 +4,8 @@ import { Course } from './entity/course';
 import { Html } from './entity/html';
 import { STATE } from './state';
 import { AppConfiguration } from './configuration';
-import { extractCoursesFromHtml, ExtractCoursesResponse } from './html-to-course';
-
-const got = require('got');
+import { extractCoursesFromHtml, ExtractCoursesResponse } from './html-to-courses';
+import { getHtml } from './get-html';
 
 interface CoursesByStateInput {
   state: STATE
@@ -41,14 +40,14 @@ export class CoursesByState {
     } else {
       // Make get request
       console.log(`Pulling from: ${url}`);
-      const { body } = await got(url);
+      const html = await getHtml(url);
       await htmlRepo.save({
         state,
         page: this.page,
         url,
-        html: body,
+        html,
       });
-      response = body;
+      response = html;
     }
 
     this.page += 1;
