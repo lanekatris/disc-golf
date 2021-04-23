@@ -5,10 +5,6 @@ import { AppConfiguration } from './configuration';
 import { getHtml } from './get-html';
 import { extractAddressFromHtml } from './course-html-to-address';
 
-export async function processLocationForCourses(courseRepo: Repository<Course>) {
-
-}
-
 interface LocationProcessorForCoursesResponse {}
 
 class ResponseFactory {
@@ -187,9 +183,5 @@ export class LocationProcessorForCourses {
 
       await this.courseRepo.save(course);
       this.state.courseLocationUpdated(course);
-    }
-
-    async processOneLocation(course: Course, locationData: GeocodeResponse) {
-
     }
 }

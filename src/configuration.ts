@@ -21,8 +21,11 @@ export class AppConfiguration {
 
     public excludedCourseIds: string[];
 
+    public csvPath: string;
+
     constructor() {
       this.databasePath = getEnvironmentConfiguration('DG_DB_PATH', false) || 'dg.db';
+      this.csvPath = getEnvironmentConfiguration('DG_CSV_PATH', false) || 'courses.csv';
       this.googleMapsApiKey = getEnvironmentConfiguration('API_KEY_GEOCODING');
       this.coordinateOverrides = new Map<string, Coordinates>([
         // From course detail section from pdga.com
