@@ -18,16 +18,24 @@ export class Course {
   // @Column({ default: 0 })
   // didFindLocations!: boolean;
 
-    foundLocationCount!: number
+  foundLocationCount!: number;
 
-  latitude?: number
+  latitude?: number;
 
-  longitude?:number
+  longitude?: number;
 
   html?: string;
 
   // eslint-disable-next-line max-len
-  constructor(id: string, name: string, city: string, state: string, zip: string, holeCount: number, rating: number) {
+  constructor(
+    id: string,
+    name: string,
+    city: string,
+    state: string,
+    zip: string,
+    holeCount: number,
+    rating: number,
+  ) {
     this.id = id;
     this.name = name;
     this.city = city;
