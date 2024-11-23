@@ -2,7 +2,7 @@ import { IsNull, Not, Repository } from 'typeorm';
 import { GeocodeResponse } from '@googlemaps/google-maps-services-js';
 import { AppConfiguration } from './configuration';
 import { createDbConnection } from './db';
-import { Course } from './entity/course';
+import { Course } from '../v2/entity/course';
 
 export async function evaluateGeocodes(courseRepo: Repository<Course>) {
   const courses = await courseRepo.find({

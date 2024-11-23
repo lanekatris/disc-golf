@@ -1,44 +1,29 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
-
-@Entity()
 export class Course {
-  @PrimaryColumn()
   id: string;
 
-  @Column()
   name: string;
 
-  @Column()
   city: string;
 
-  @Column()
   state: string;
 
-  @Column()
   zip: string;
 
-  @Column()
   holeCount: number;
 
-  @Column({ nullable: true })
   rating?: number;
 
-  @Column({ nullable: true })
   rawLocationData?: string;
 
   // @Column({ default: 0 })
   // didFindLocations!: boolean;
 
-    @Column({ default: 0 })
     foundLocationCount!: number
 
-  @Column({ nullable: true })
   latitude?: number
 
-  @Column({ nullable: true })
   longitude?:number
 
-  @Column({ nullable: true })
   html?: string;
 
   // eslint-disable-next-line max-len

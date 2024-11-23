@@ -3,7 +3,7 @@ import { AppConfiguration } from './configuration';
 import { CoursesByState } from './courses-by-state';
 import { createDbConnection } from './db';
 import { STATE } from './state';
-import { Html } from './entity/html';
+import { Html } from '../v2/entity/html';
 
 export async function getCoursesByStateAndPersist(state: STATE, connection: Connection) {
   const appConfiguration = new AppConfiguration();

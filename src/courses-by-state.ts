@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import { Repository } from 'typeorm';
-import { Course } from './entity/course';
-import { Html } from './entity/html';
+import { Course } from '../v2/entity/course';
+import { Html } from '../v2/entity/html';
 import { STATE } from './state';
 import { AppConfiguration } from './configuration';
-import { extractCoursesFromHtml, ExtractCoursesResponse } from './html-to-courses';
+import { extractCoursesFromHtml, ExtractCoursesResponse } from '../v2/html-to-courses';
 import { getHtml } from './get-html';
 
 interface CoursesByStateInput {

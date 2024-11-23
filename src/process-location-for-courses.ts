@@ -1,6 +1,6 @@
 import { IsNull, Not, Repository } from 'typeorm';
 import { Client, GeocodeResponse } from '@googlemaps/google-maps-services-js';
-import { Course } from './entity/course';
+import { Course } from '../v2/entity/course';
 import { AppConfiguration } from './configuration';
 import { getHtml } from './get-html';
 import { extractAddressFromHtml } from './course-html-to-address';

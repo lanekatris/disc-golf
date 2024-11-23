@@ -1,7 +1,7 @@
 import { parseAsync } from 'json2csv';
 import { Repository } from 'typeorm';
 import fs from 'fs-extra';
-import { Course } from './entity/course';
+import { Course } from '../v2/entity/course';
 import { AppConfiguration } from './configuration';
 
 interface CreateCsvInput {

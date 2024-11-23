@@ -3,7 +3,7 @@ import { IsNull } from 'typeorm';
 import a from 'async';
 import { AppConfiguration } from './configuration';
 import { createDbConnection } from './db';
-import { Course } from './entity/course';
+import { Course } from '../v2/entity/course';
 
 const client = new Client();
 const CONCURRENCY = 45;

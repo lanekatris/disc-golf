@@ -1,0 +1,452 @@
+[
+  {
+    "id": "ballyknock",
+    "name": "Ballyknock",
+    "city": "Sugar Grove",
+    "state": "West Virginia",
+    "zip": 26815,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "barboursville-city-park",
+    "name": "Barboursville City Park",
+    "city": "Barboursville",
+    "state": "West Virginia",
+    "zip": 25504,
+    "holeCount": 18,
+    "rating": 3.5
+  },
+  {
+    "id": "battleground-disc-golf-course",
+    "name": "Battleground Disc Golf Course",
+    "city": "Philippi",
+    "state": "West Virginia",
+    "zip": 26416,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "beech-fork-state-park-disc-golf-course",
+    "name": "Beech Fork State Park Disc Golf Course",
+    "city": "Barboursville",
+    "state": "West Virginia",
+    "zip": 25504,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "blackwater-falls-disc-golf-course",
+    "name": "Blackwater Falls State Park Disc Golf Course",
+    "city": "Davis",
+    "state": "West Virginia",
+    "zip": 26260,
+    "holeCount": 18,
+    "rating": 4
+  },
+  {
+    "id": "blennerhassett-island-historic-state-park-course",
+    "name": "Blennerhassett Island Historic State Park Course",
+    "city": "Parkersburg",
+    "state": "West Virginia",
+    "zip": 26101,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "bridge-park",
+    "name": "Bridge Park",
+    "city": "Hurricane",
+    "state": "West Virginia",
+    "zip": 25526,
+    "holeCount": 36,
+    "rating": 0
+  },
+  {
+    "id": "bud-billiard-dgc",
+    "name": "Bud and Carol Billiard Disc Golf Course",
+    "city": "Wellsburg",
+    "state": "West Virginia",
+    "zip": 26070,
+    "holeCount": 18,
+    "rating": 4
+  },
+  {
+    "id": "camp-walker-0",
+    "name": "Camp Walker",
+    "city": "Augusta",
+    "state": "West Virginia",
+    "zip": 26707,
+    "holeCount": 9,
+    "rating": 0
+  },
+  {
+    "id": "cato-park",
+    "name": "Cato Park",
+    "city": "Charleston",
+    "state": "West Virginia",
+    "zip": 25302,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "cedar-lakes-disc-golf-course",
+    "name": "Cedar Lakes Disc Golf Course",
+    "city": "Ripley",
+    "state": "West Virginia",
+    "zip": 25271,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "ceredo-wayside-disc-golf",
+    "name": "Ceredo Wayside Disc Golf",
+    "city": "Ceredo",
+    "state": "West Virginia",
+    "zip": 25507,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "chester-city-park-disc-golf-course",
+    "name": "Chester City Park Disc Golf Course",
+    "city": "Chester",
+    "state": "West Virginia",
+    "zip": 26034,
+    "holeCount": 9,
+    "rating": 0
+  },
+  {
+    "id": "collins-park-disc-golf-course",
+    "name": "Collins Park Disc Golf Course ",
+    "city": "Oak Hill WV",
+    "state": "West Virginia",
+    "zip": 25901,
+    "holeCount": 9,
+    "rating": 0
+  },
+  {
+    "id": "coonskin-disc-golf-course",
+    "name": "Coonskin Disc Golf Course",
+    "city": "Charleston",
+    "state": "West Virginia",
+    "zip": 25311,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "crazy-8",
+    "name": "Crazy 8",
+    "city": "Lavalette",
+    "state": "West Virginia",
+    "zip": 25535,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "davis-elkins-college",
+    "name": "Davis & Elkins College",
+    "city": "Elkins",
+    "state": "West Virginia",
+    "zip": 26241,
+    "holeCount": 9,
+    "rating": 3
+  },
+  {
+    "id": "dorseys-knob-disc-golf-course",
+    "name": "Dorsey's Knob Disc Golf Course",
+    "city": "Morgantown",
+    "state": "West Virginia",
+    "zip": 26508,
+    "holeCount": 18,
+    "rating": 4
+  },
+  {
+    "id": "dunbar-city-park-disc-golf-course",
+    "name": "Dunbar City Park Disc Golf Course",
+    "city": "Dunbar",
+    "state": "West Virginia",
+    "zip": 25064,
+    "holeCount": 9,
+    "rating": 0
+  },
+  {
+    "id": "eleanor-park",
+    "name": "Eleanor Park",
+    "city": "Eleanor",
+    "state": "West Virginia",
+    "zip": 25070,
+    "holeCount": 18,
+    "rating": 4
+  },
+  {
+    "id": "fairgrounds-disc-golf-course",
+    "name": "Fairgrounds Disc Golf Course",
+    "city": "Fairlea",
+    "state": "West Virginia",
+    "zip": 24901,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "fairy-diddle-snowshoe-mtn-snow-shoe-west-virginia",
+    "name": "Fairy Diddle at Snowshoe Mountain",
+    "city": "Snowshoe",
+    "state": "West Virginia",
+    "zip": 26291,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "fayette-county-park",
+    "name": "Fayette County Park",
+    "city": "Fayetteville",
+    "state": "West Virginia",
+    "zip": 25840,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "fellowship-bible-church-dgc-0",
+    "name": "Fellowship Bible Church DGC",
+    "city": "Shenandoah Junction",
+    "state": "West Virginia",
+    "zip": 25442,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "glade-springs-disc-golf-course",
+    "name": "Glade Springs Disc Golf Course",
+    "city": "Daniels",
+    "state": "West Virginia",
+    "zip": 25832,
+    "holeCount": 9,
+    "rating": 0
+  },
+  {
+    "id": "glendale-park",
+    "name": "Glendale Park",
+    "city": "Elkins",
+    "state": "West Virginia",
+    "zip": 26241,
+    "holeCount": 9,
+    "rating": 0
+  },
+  {
+    "id": "glenwood-park-dgc",
+    "name": "Glenwood Park Disc Golf Course",
+    "city": "Princeton",
+    "state": "West Virginia",
+    "zip": 24739,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "greenbrier-state-forest-disc-golf-course",
+    "name": "Greenbrier State Forest Disc Golf Course",
+    "city": "Caldwell",
+    "state": "West Virginia",
+    "zip": 24925,
+    "holeCount": 18,
+    "rating": 4.5
+  },
+  {
+    "id": "gsc-high-adventure-disc-golf-course",
+    "name": "GSC High Adventure Disc Golf Course",
+    "city": "Glenville",
+    "state": "West Virginia",
+    "zip": 26351,
+    "holeCount": 9,
+    "rating": 4
+  },
+  {
+    "id": "indian-rock-rotary-park",
+    "name": "Indian Rock at Rotary Park",
+    "city": "Huntington",
+    "state": "West Virginia",
+    "zip": 25705,
+    "holeCount": 18,
+    "rating": 3.5
+  },
+  {
+    "id": "jackson-park-disc-golf-course",
+    "name": "Jackson Park Disc Golf Course",
+    "city": "Vienna",
+    "state": "West Virginia",
+    "zip": 26105,
+    "holeCount": 9,
+    "rating": 0
+  },
+  {
+    "id": "jacksons-mill-disc-golf-course",
+    "name": "Jackson's Mill Disc Golf Course",
+    "city": "Weston",
+    "state": "West Virginia",
+    "zip": 26452,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "jason-wintz-memorial-disc-golf-course",
+    "name": "Jason Wintz Memorial Disc Golf Course",
+    "city": "Barboursville",
+    "state": "West Virginia",
+    "zip": 25504,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "lake-stephens",
+    "name": "Lake Stephens Disc Golf Course",
+    "city": "Surveyor",
+    "state": "West Virginia",
+    "zip": 25932,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "lewis-county-park",
+    "name": "Lewis County Park ",
+    "city": "Weston",
+    "state": "West Virginia",
+    "zip": 26452,
+    "holeCount": 9,
+    "rating": 0
+  },
+  {
+    "id": "little-creek-park",
+    "name": "Little Creek Park",
+    "city": "South Charleston",
+    "state": "West Virginia",
+    "zip": 25309,
+    "holeCount": 18,
+    "rating": 2.5
+  },
+  {
+    "id": "lost-river-state-park",
+    "name": "Lost River State Park",
+    "city": "Mathias",
+    "state": "West Virginia",
+    "zip": 26812,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "lucky-8",
+    "name": "Lucky 8",
+    "city": "Lavalette",
+    "state": "West Virginia",
+    "zip": 25535,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "meathouse-fork-disc-golf-course",
+    "name": "Meathouse Fork Disc Golf Course",
+    "city": "West Union",
+    "state": "West Virginia",
+    "zip": 26456,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "mountaineer-disc-golf-course-0",
+    "name": "Mountaineer Disc Golf Course",
+    "city": "Spencer",
+    "state": "West Virginia",
+    "zip": 25276,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "mulbright-pines",
+    "name": "Mulbright Pines",
+    "city": "Williamstown",
+    "state": "West Virginia",
+    "zip": 26187,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "nellies-course",
+    "name": "Nellie's Course",
+    "city": "Renick",
+    "state": "West Virginia",
+    "zip": 24966,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "ohio-valley-university",
+    "name": "Ohio Valley University",
+    "city": "Vienna",
+    "state": "West Virginia",
+    "zip": 26105,
+    "holeCount": 18,
+    "rating": 0
+  },
+  {
+    "id": "orange-crush",
+    "name": "Orange Crush",
+    "city": "Fairmont",
+    "state": "West Virginia",
+    "zip": 26554,
+    "holeCount": 18,
+    "rating": 4.5
+  },
+  {
+    "id": "parchment-valley-winter-lake-disc-golf-course",
+    "name": "Parchment Valley Winter Lake Disc Golf Course",
+    "city": "Ripley",
+    "state": "West Virginia",
+    "zip": 25271,
+    "holeCount": 9,
+    "rating": 0
+  },
+  {
+    "id": "pine-haven-cabins",
+    "name": "Pine Haven Cabins",
+    "city": "Beaver",
+    "state": "West Virginia",
+    "zip": 25893,
+    "holeCount": 9,
+    "rating": 0
+  },
+  {
+    "id": "pipestem-state-park-disc-golf-course",
+    "name": "Pipestem State Park Disc Golf Course",
+    "city": "Pipestem",
+    "state": "West Virginia",
+    "zip": 25979,
+    "holeCount": 18,
+    "rating": 4.5
+  },
+  {
+    "id": "poor-house-farm-disc-golf",
+    "name": "Poor House Farm Disc Golf",
+    "city": "Martinsburg",
+    "state": "West Virginia",
+    "zip": 25403,
+    "holeCount": 18,
+    "rating": 4
+  },
+  {
+    "id": "princeton-city-park",
+    "name": "Princeton City Park",
+    "city": "Princeton",
+    "state": "West Virginia",
+    "zip": 24740,
+    "holeCount": 18,
+    "rating": 4
+  },
+  {
+    "id": "ravens-ridge",
+    "name": "Ravens Ridge",
+    "city": "Lansing",
+    "state": "West Virginia",
+    "zip": 25862,
+    "holeCount": 9,
+    "rating": 3.8
+  }
+]

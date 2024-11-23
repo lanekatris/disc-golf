@@ -2,7 +2,7 @@ import { AppConfiguration } from '../src/configuration';
 import { loadCoursesIntoDb } from '../src/load-courses-into-db';
 import { createCsvFromCoursesDb } from '../src/create-csv-from-courses-db';
 import { createDbConnection } from '../src/db';
-import { Course } from '../src/entity/course';
+import { Course } from '../v2/entity/course';
 import { loadLocationsFromCourses } from '../src/load-locations-from-courses';
 import { evaluateGeocodes } from '../src/evaluate-geocodes';
 import { LocationProcessorForCourses } from '../src/process-location-for-courses';
