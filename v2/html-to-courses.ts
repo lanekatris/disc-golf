@@ -12,7 +12,8 @@ export const course = z.object({
   // zip: z.string(),
   zip: z.coerce.number(),
   holeCount: z.coerce.number(),
-  rating: z.coerce.number().optional()
+  rating: z.coerce.number().optional(),
+  yearEstablished: z.coerce.number()
 })
 
 export type Course = z.infer<typeof course>;
@@ -53,6 +54,7 @@ export function extractCoursesFromHtml(html: string): ExtractCoursesResponse {
     courses.push(
       course.parse({
         id,
+        yearEstablished: el.find('.views-field-field-course-year-established').text(),
         name: el.find('.views-field-title a').text(),
         city: el
             .find('.views-field-field-course-location')
