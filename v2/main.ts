@@ -1,9 +1,5 @@
 // import cheerio from 'npm:cheerio@1.0.0'
-import {
-  Course,
-  extractCoursesFromHtml,
-  ExtractCoursesResponse,
-} from "./html-to-courses.ts";
+import {Course, extractCoursesFromHtml, ExtractCoursesResponse,} from "./html-to-courses.ts";
 // import { Database } from "jsr:@db/sqlite@0.12";
 // import { writeFile } from "jsr:@std/fs";
 
@@ -17,10 +13,11 @@ export function add(a: number, b: number): number {
 if (import.meta.main) {
   console.log("Add 2 + 3 =", add(2, 3));
   // idk()
-  orchestrator();
+  await orchestrator();
 }
 
 async function orchestrator() {
+  console.time('program')
   let existingData = "[]";
   try {
     existingData = await Deno.readTextFile("data.json");
@@ -31,8 +28,9 @@ async function orchestrator() {
 
   let go = true;
   let index = 0;
+  let totalCourses: string | undefined;
   while (go) {
-    console.log(`Getting page: ${index}`);
+    console.log(`Getting page: ${index}, ${index * 50} / ${totalCourses}`);
 
     let alreadyLoadedAll = true;
     const result = await idk(index);
@@ -51,12 +49,20 @@ async function orchestrator() {
       break;
     }
 
+    // Write to file once in a while or use sqlite...
+    if (index !== 0 && index % 5 === 0) {
+      console.log(`Periodic file write, index: ${index}...`)
+      await Deno.writeTextFile("data.json", JSON.stringify(courses, null, 2));
+    }
+
     index++;
     go = result.hasMore;
+    totalCourses = result.totalCourses
   }
 
   await Deno.writeTextFile("data.json", JSON.stringify(courses, null, 2));
   console.log("Overview", { count: courses.length });
+  console.timeEnd('program')
 }
 
 // Get files pages of data
@@ -71,13 +77,12 @@ async function idk(page: number): Promise<ExtractCoursesResponse> {
 
   // const resp = await fetch('https://www.pdga.com/course-directory/advanced?order=field_course_year_established&sort=desc')
   const resp = await fetch(
-    `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=VA&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All${
-      page === 0 ? "" : "&page=" + page
-    }`,
+      // `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=ALL&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All&order=field_course_year_established&sort=desc${page === 0 ? "" : "&page=" + page}`
+
+      `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=All&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All&order=field_course_year_established&sort=desc${page === 0 ? "" : "&page=" + page}`
   );
   // https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=WV&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All&page=1
   // https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=OH&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All
   const html = await resp.text();
-  const result = extractCoursesFromHtml(html);
-  return result;
+  return extractCoursesFromHtml(html);
 }

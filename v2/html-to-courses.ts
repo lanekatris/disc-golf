@@ -10,7 +10,7 @@ export const course = z.object({
   city: z.string().trim(),
   state: z.string(),
   // zip: z.string(),
-  zip: z.coerce.number(),
+  zip: z.string().optional(),
   holeCount: z.coerce.number(),
   rating: z.coerce.number().optional(),
   yearEstablished: z.coerce.number(),
@@ -21,6 +21,7 @@ export type Course = z.infer<typeof course>;
 export interface ExtractCoursesResponse {
   courses: Course[];
   hasMore: boolean;
+  totalCourses?: string;
 }
 
 // function clean(
@@ -78,5 +79,6 @@ export function extractCoursesFromHtml(html: string): ExtractCoursesResponse {
   return {
     courses,
     hasMore: $(".pager-last.last").length > 0,
+      totalCourses: $(".view-footer").text().trim().split(' ').pop()
   };
 }
