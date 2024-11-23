@@ -14,6 +14,7 @@ export const course = z.object({
   holeCount: z.coerce.number(),
   rating: z.coerce.number().optional(),
   yearEstablished: z.coerce.number(),
+    page: z.number().optional(),
 });
 
 export type Course = z.infer<typeof course>;
@@ -45,15 +46,12 @@ export function extractCoursesFromHtml(html: string): ExtractCoursesResponse {
 
   rows.each((index: number, element: any) => {
     const el = $(element);
-    const id = el.find(".views-field-title a").attr("href")!.replace(
-      "/course-directory/course/",
-      "",
-    );
+    const id = el.find(".views-field-title a").attr("href");
 
     const zip = el.find(".views-field-field-course-location-1").text()
       .replace(/\s/g, "");
 
-    const zipReplacement = replacements.get(zip);
+    // const zipReplacement = replacements.get(zip);
 
     courses.push(
       course.parse({
@@ -66,7 +64,7 @@ export function extractCoursesFromHtml(html: string): ExtractCoursesResponse {
           .text()
           .replace(/\n/, ""),
         state: el.find(".addressfield-state").text(),
-        zip: zipReplacement || zip,
+        zip: zip,
         holeCount: el.find(".views-field-field-course-holes").text(),
         rating: el
           .find(".average-rating")

@@ -14,10 +14,24 @@ if (import.meta.main) {
   console.log("Add 2 + 3 =", add(2, 3));
   // idk()
   await orchestrator();
+  // const c = await getCachedCourses()
+  // // console.log('texas count: ' + c.filter(x => x.state === 'Texas').length)
+  //
+  // const stats = c.reduce((previousValue, currentValue, currentIndex) => {
+  //   const d = previousValue[currentValue.id]
+  //   const count = d ? d + 1 : 1;
+  //   // return previousValue[currentValue.state] = previousValue[currentValue.state] ?
+  //   // return previousValue[currentValue.state] = count
+  //   return {
+  //     ...previousValue,
+  //     [currentValue.id]: count
+  //   }
+  // },{})
+  //
+  // console.log(stats)
 }
 
-async function orchestrator() {
-  console.time('program')
+async function getCachedCourses() {
   let existingData = "[]";
   try {
     existingData = await Deno.readTextFile("data.json");
@@ -25,22 +39,42 @@ async function orchestrator() {
     console.error(e);
   }
   const courses: Course[] = JSON.parse(existingData);
+  return courses;
+}
+
+// todo: except for the first page, pull from cache
+async function orchestrator() {
+  console.time('program')
+  // let existingData = "[]";
+  // try {
+  //   existingData = await Deno.readTextFile("data.json");
+  // } catch (e) {
+  //   console.error(e);
+  // }
+  // const courses: Course[] = JSON.parse(existingData);
+  const courses = await getCachedCourses();
 
   let go = true;
-  let index = 0;
+  let index = 1;
   let totalCourses: string | undefined;
   while (go) {
-    console.log(`Getting page: ${index}, ${index * 50} / ${totalCourses}`);
+    // console.log(`Getting page: ${index}, ${index * 50} / ${totalCourses}`);
+    console.log(`Getting page. Index=${index}, page=${index-1}. ${(index - 1) * 50}/${totalCourses}`);
 
-    let alreadyLoadedAll = true;
+    let alreadyLoadedAll = false;
     const result = await idk(index);
+    console.log(`Found ${result.courses.length} courses`)
     result.courses.forEach((course: Course) => {
-      const existingCourse = courses.find((c) => c.id === course.id);
-      if (!existingCourse) {
-        console.log(`Adding course to array: ${course.id}`);
-        alreadyLoadedAll = false;
-        courses.push(course);
-      }
+      courses.push({
+        ...course,
+        page: index - 1
+      });
+      // const existingCourse = courses.find((c) => c.id === course.id);
+      // if (!existingCourse) {
+      //   // console.log(`Adding course to array: ${course.id}`);
+      //   alreadyLoadedAll = false;
+      //   courses.push(course);
+      // }
     });
 
     if (alreadyLoadedAll) {
@@ -49,11 +83,11 @@ async function orchestrator() {
       break;
     }
 
-    // Write to file once in a while or use sqlite...
-    if (index !== 0 && index % 5 === 0) {
-      console.log(`Periodic file write, index: ${index}...`)
-      await Deno.writeTextFile("data.json", JSON.stringify(courses, null, 2));
-    }
+    // // Write to file once in a while or use sqlite...
+    // if (index !== 0 && index % 5 === 0) {
+    //   console.log(`Periodic file write, index: ${index}...`)
+    //   await Deno.writeTextFile("data.json", JSON.stringify(courses, null, 2));
+    // }
 
     index++;
     go = result.hasMore;
@@ -76,10 +110,13 @@ async function idk(page: number): Promise<ExtractCoursesResponse> {
   // const courses: Course[] = JSON.parse(existingData);
 
   // const resp = await fetch('https://www.pdga.com/course-directory/advanced?order=field_course_year_established&sort=desc')
+  const url =
+      `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=All&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All&order=field_course_year_established&sort=desc${page === 1 ? "" : "&page=" + (page - 1)}`
+  console.log('url', url)
   const resp = await fetch(
-      // `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=ALL&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All&order=field_course_year_established&sort=desc${page === 0 ? "" : "&page=" + page}`
+      // `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=NY&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All&order=field_course_year_established&sort=desc${page === 0 ? "" : "&page=" + page}`
 
-      `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=All&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All&order=field_course_year_established&sort=desc${page === 0 ? "" : "&page=" + page}`
+      url
   );
   // https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=WV&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All&page=1
   // https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=OH&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All
