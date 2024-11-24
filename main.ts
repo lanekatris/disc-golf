@@ -1,4 +1,6 @@
 import { getCachedCourses } from "./getCachedCourses.ts";
+import {stringify} from "@std/csv";
+
 import {
   Course,
   extractCoursesFromHtml,
@@ -51,6 +53,11 @@ async function orchestrator() {
   }
 
   await Deno.writeTextFile("data.json", JSON.stringify(courses, null, 2));
+
+  console.log('Creating file data.csv...')
+  const csv = stringify(courses, {columns:['id', 'name', 'city', 'state', 'zip', 'holeCount', 'rating', 'yearsEstablished', 'page']})
+  await Deno.writeTextFile("data.csv", csv);
+
   console.log("Overview", { count: courses.length });
   console.timeEnd("program");
 }
