@@ -1,47 +1,40 @@
 import { getCachedCourses } from "./getCachedCourses.ts";
-import {Course, extractCoursesFromHtml, ExtractCoursesResponse,} from "./html-to-courses.ts";
+import {
+  Course,
+  extractCoursesFromHtml,
+  ExtractCoursesResponse,
+} from "./html-to-courses.ts";
 
 // Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
 if (import.meta.main) {
   await orchestrator();
-  // const c = await getCachedCourses()
-  // // console.log('texas count: ' + c.filter(x => x.state === 'Texas').length)
-  //
-  // const stats = c.reduce((previousValue, currentValue, currentIndex) => {
-  //   const d = previousValue[currentValue.id]
-  //   const count = d ? d + 1 : 1;
-  //   // return previousValue[currentValue.state] = previousValue[currentValue.state] ?
-  //   // return previousValue[currentValue.state] = count
-  //   return {
-  //     ...previousValue,
-  //     [currentValue.id]: count
-  //   }
-  // },{})
-  //
-  // console.log(stats)
 }
 
 // todo: except for the first page, pull from cache
 async function orchestrator() {
-  console.time('program')
+  console.time("program");
   const courses = await getCachedCourses();
 
   let go = true;
   let index = 1;
   let totalCourses: string | undefined;
   while (go) {
-    console.log(`Getting page. Index=${index}, page=${index-1}. ${(index - 1) * 50}/${totalCourses}`);
+    console.log(
+      `Getting page. Index=${index}, page=${index - 1}. ${
+        (index - 1) * 50
+      }/${totalCourses}`,
+    );
 
     let alreadyLoadedAll = true;
     const result = await getAndParsePageHtml(index);
-    console.log(`Found ${result.courses.length} courses`)
+    console.log(`Found ${result.courses.length} courses`);
     result.courses.forEach((course: Course) => {
       const existingCourse = courses.find((c) => c.id === course.id);
       if (!existingCourse) {
         alreadyLoadedAll = false;
         courses.push({
           ...course,
-          page: index - 1
+          page: index - 1,
         });
       }
     });
@@ -54,12 +47,12 @@ async function orchestrator() {
 
     index++;
     go = result.hasMore;
-    totalCourses = result.totalCourses
+    totalCourses = result.totalCourses;
   }
 
   await Deno.writeTextFile("data.json", JSON.stringify(courses, null, 2));
   console.log("Overview", { count: courses.length });
-  console.timeEnd('program')
+  console.timeEnd("program");
 }
 
 // Get files pages of data
@@ -67,12 +60,16 @@ async function orchestrator() {
 
 // todo: we want to seperate the loading of html and the parsing of data... but you also want the latest data so
 // you can't assume the first page should come from cache as it could have new data
-async function getAndParsePageHtml(page: number): Promise<ExtractCoursesResponse> {
+async function getAndParsePageHtml(
+  page: number,
+): Promise<ExtractCoursesResponse> {
   const url =
-      `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=All&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All&order=field_course_year_established&sort=desc${page === 1 ? "" : "&page=" + (page - 1)}`
-  console.log('url', url)
+    `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=All&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All&order=field_course_year_established&sort=desc${
+      page === 1 ? "" : "&page=" + (page - 1)
+    }`;
+  console.log("url", url);
   const resp = await fetch(
-      url
+    url,
   );
   const html = await resp.text();
   return extractCoursesFromHtml(html);

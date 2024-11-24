@@ -1,7 +1,4 @@
-// import cheerio from 'cheerio';
-
-import * as cheerio from "https://esm.sh/cheerio@1.0.0-rc.12";
-// import { Course } from './entity/course.ts';
+import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.48/deno-dom-wasm.ts";
 import { z } from "https://deno.land/x/zod@v3.23.8/mod.ts";
 
 export const course = z.object({
@@ -9,12 +6,11 @@ export const course = z.object({
   name: z.string(),
   city: z.string().trim(),
   state: z.string(),
-  // zip: z.string(),
   zip: z.string().optional(),
   holeCount: z.coerce.number(),
   rating: z.coerce.number().optional(),
   yearEstablished: z.coerce.number(),
-    page: z.number().optional(),
+  page: z.number().optional(),
 });
 
 export type Course = z.infer<typeof course>;
@@ -25,50 +21,37 @@ export interface ExtractCoursesResponse {
   totalCourses?: string;
 }
 
-// function clean(
-//   input: string,
-//   type: string = 'string',
-// ): string | number {
-//   const result = input.replace(/\n/, '');
-//
-//   if (type === 'num') return parseInt(result, 10);
-//
-//   return result;
-// }
-
-const replacements = new Map().set("!8603", "18603");
-
 export function extractCoursesFromHtml(html: string): ExtractCoursesResponse {
-  const $ = cheerio.load(html);
-  const rows = $("tbody tr");
+  const $ = new DOMParser().parseFromString(html, "text/html");
+  const rows = $.querySelectorAll("tbody tr");
 
   const courses: Course[] = [];
 
-  rows.each((index: number, element: any) => {
-    const el = $(element);
-    const id = el.find(".views-field-title a").attr("href");
+  [...rows].forEach((el) => {
+    const id = el.querySelector(".views-field-title a")?.getAttribute("href");
 
-    const zip = el.find(".views-field-field-course-location-1").text()
+    const zip = el.querySelector(".views-field-field-course-location-1")
+      ?.textContent
       .replace(/\s/g, "");
-
-    // const zipReplacement = replacements.get(zip);
 
     courses.push(
       course.parse({
         id,
-        yearEstablished: el.find(".views-field-field-course-year-established")
-          .text(),
-        name: el.find(".views-field-title a").text(),
+        yearEstablished: el.querySelector(
+          ".views-field-field-course-year-established",
+        )
+          ?.textContent,
+        name: el.querySelector(".views-field-title a")?.textContent,
         city: el
-          .find(".views-field-field-course-location")
-          .text()
+          .querySelector(".views-field-field-course-location")?.textContent
           .replace(/\n/, ""),
-        state: el.find(".addressfield-state").text(),
+        state: el.querySelector(".addressfield-state")?.textContent,
         zip: zip,
-        holeCount: el.find(".views-field-field-course-holes").text(),
+        holeCount: el.querySelector(".views-field-field-course-holes")
+          ?.textContent,
         rating: el
-          .find(".average-rating")
-          .text()
+          .querySelector(".average-rating")
+          ?.textContent
           .replace(/Average: /, ""),
       }),
     );
@@ -76,7 +59,8 @@ export function extractCoursesFromHtml(html: string): ExtractCoursesResponse {
 
   return {
     courses,
-    hasMore: $(".pager-last.last").length > 0,
-      totalCourses: $(".view-footer").text().trim().split(' ').pop()
+    hasMore: $.querySelectorAll(".pager-last.last").length > 0,
+    totalCourses: $.querySelector(".view-footer")?.textContent.trim().split(" ")
+      .pop(),
   };
 }
