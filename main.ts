@@ -1,5 +1,5 @@
 import { getCachedCourses } from "./getCachedCourses.ts";
-import {stringify} from "@std/csv";
+import { stringify } from "@std/csv";
 
 import {
   Course,
@@ -54,8 +54,20 @@ async function orchestrator() {
 
   await Deno.writeTextFile("data.json", JSON.stringify(courses, null, 2));
 
-  console.log('Creating file data.csv...')
-  const csv = stringify(courses, {columns:['id', 'name', 'city', 'state', 'zip', 'holeCount', 'rating', 'yearsEstablished', 'page']})
+  console.log("Creating file data.csv...");
+  const csv = stringify(courses, {
+    columns: [
+      "id",
+      "name",
+      "city",
+      "state",
+      "zip",
+      "holeCount",
+      "rating",
+      "yearsEstablished",
+      "page",
+    ],
+  });
   await Deno.writeTextFile("data.csv", csv);
 
   console.log("Overview", { count: courses.length });
@@ -74,7 +86,6 @@ async function getAndParsePageHtml(
     `https://www.pdga.com/course-directory/advanced?title=&field_course_location_country=US&field_course_location_locality=&field_course_location_administrative_area=All&field_course_location_postal_code=&field_course_type_value=All&rating_value=All&field_course_holes_value=All&field_course_total_length_value=All&field_course_target_type_value=All&field_course_tee_type_value=All&field_location_type_value=All&field_course_camping_value=All&field_course_facilities_value=All&field_course_fees_value=All&field_course_handicap_value=All&field_course_private_value=All&field_course_signage_value=All&field_cart_friendly_value=All&order=field_course_year_established&sort=desc${
       page === 1 ? "" : "&page=" + (page - 1)
     }`;
-  console.log("url", url);
   const resp = await fetch(
     url,
   );
